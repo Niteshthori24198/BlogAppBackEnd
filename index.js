@@ -4,13 +4,20 @@ const { connection } = require('./db')
 
 const { userRouter } = require('./routes/user.routes')
 
-const {blogRouter} = require('./routes/blog.routes')
+const { blogRouter } = require('./routes/blog.routes')
 
 const cookieParser = require('cookie-parser')
 
 require('dotenv').config()
 
+const cors = require('cors')
+
 const app = express()
+
+
+app.use(cors({
+    exposedHeaders: ['Set-Cookie'],
+}));
 
 app.use(express.json())
 
@@ -21,7 +28,7 @@ app.use("/user", userRouter)
 app.use("/blog", blogRouter)
 
 
-app.all("*" , (req,res)=>{
+app.all("*", (req, res) => {
     res.send("Invalid URl !! Error 404")
 })
 
@@ -30,15 +37,15 @@ app.all("*" , (req,res)=>{
 
 
 
-app.listen(process.env.port , async (req,res)=>{
+app.listen(process.env.port, async (req, res) => {
 
     try {
 
         await connection
         console.log("Connected to db. server running !")
 
-    } 
-    
+    }
+
     catch (error) {
         console.log(error)
     }

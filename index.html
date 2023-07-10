@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div>
+        <form onsubmit="HR(event)">
+            <input type="text" id="name">
+            <input type="text" id="email">
+            <input type="text" id="pass">
+            <input type="submit" value="reg">
+        </form>
+    </div>
+
+    <div>
+        <form onsubmit="HL(event)">
+            <input type="text" id="lemail">
+            <input type="text" id="lpass">
+            <input type="submit" value="log">
+        </form>
+    </div>
+
+    <button>Testing Button</button>
+
+</body>
+
+</html>
+<script>
+    function HR(e) {
+        e.preventDefault()
+
+        const data = {
+            Name: e.target.name.value,
+            Email: e.target.email.value,
+            Password: e.target.pass.value,
+        }
+
+        console.log(data)
+
+        fetch(`http://localhost:3000/user/register`, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then((res) => res.json()).then((data) => {
+            console.log(data)
+        }).catch((err) => console.log(err))
+
+    }
+
+
+    function HL(e) {
+        e.preventDefault()
+
+        const data = {
+            Email: e.target.lemail.value,
+            Password: e.target.lpass.value,
+        }
+
+        console.log(data)
+        fetch(`http://localhost:3000/user/login`, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then((res) => {
+
+            const rt = res.headers.get('Set-Cookie')
+            console.log("---> ", rt)
+            return res.json()
+        }).then((data) => {
+            console.log(data)
+        }).catch((err) => console.log(err))
+    }
+
+
+    document.querySelector('button').addEventListener('click', () => {
+        fetch(`http://localhost:3000/user/gettoken`)
+            .then((res) => {
+
+                return res.json()
+
+            })
+            .then((data) => {
+                console.log(data)
+            }).catch((err) => console.log(err))
+    })
+
+
+
+</script>

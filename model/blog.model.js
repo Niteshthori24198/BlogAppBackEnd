@@ -6,7 +6,9 @@ const { UserModel } = require('./user.model')
 const blogSchema = mongoose.Schema({
 
    AuthorID:{type: mongoose.Schema.Types.ObjectId , ref: UserModel, required:true},
+
    Title:{type:String, required:true},
+   
    Description:{type:String, required:true}
 
 },
